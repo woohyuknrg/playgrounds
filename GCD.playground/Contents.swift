@@ -213,10 +213,10 @@ userData.setEventHandler {
 userData.resume()
 let serialQueueData = DispatchQueue(label: "com")
 serialQueueData.async {
-    for var index in 1...1000{
+    for _ in 1...1000{
         userData.add(data: 1)
     }
-    for var index in 1...1000{
+    for _ in 1...1000{
         userData.add(data: 1)
     }
 }
