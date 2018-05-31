@@ -107,3 +107,61 @@ func lowestCommonAncestor(_ root: TreeNode?, p: TreeNode?, q: TreeNode?) -> Tree
     }
     return root
 }
+
+
+//----------------作业----------------//
+//获取二叉树的最小深度
+func minDepth(_ root: TreeNode?) -> Int {
+    guard let root = root else {
+        return 0
+    }
+
+    let leftDepth = minDepth(root.left)
+    let rightDepth = minDepth(root.right)
+
+    if leftDepth == 0 {
+        return rightDepth + 1
+    } else if rightDepth == 0 {
+        return leftDepth + 1
+    }
+    return min(leftDepth, rightDepth) + 1
+}
+
+//给定二叉树，判断是否是对称树
+//https://leetcode.com/problems/symmetric-tree/description/
+func isSymmetric(_ root: TreeNode?) -> Bool {
+    guard let root = root else {
+        return true
+    }
+
+    return judgeSymmetric(root.left, right: root.right)
+}
+
+func judgeSymmetric(_ left: TreeNode?, right: TreeNode?) -> Bool {
+    if left == nil && right == nil {
+        return true
+    }
+
+    if left?.val != right?.val {
+        return false
+    }
+
+    return judgeSymmetric(left?.left, right: right?.right) && judgeSymmetric(left?.right, right: right?.left)
+}
+
+//把二叉树转换为链表树(没做对)
+//https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/
+
+var preNode: TreeNode?
+
+func flatten(_ root: TreeNode?) {
+    guard let root = root else {
+        return
+    }
+
+    flatten(root.right)
+    flatten(root.left)
+    root.right = preNode
+    root.left = nil
+    preNode = root
+}
