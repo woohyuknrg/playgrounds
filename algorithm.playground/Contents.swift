@@ -68,10 +68,35 @@ public class ListNode {
     }
 }
 func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-    if l1 == nil {
+    guard let l1 = l1 else {
         return l2
     }
-    if l2 == nil {
+    guard let l2 = l2 else {
         return l1
     }
+
+    if l1.val < l2.val {
+        l1.next = mergeTwoLists(l1.next, l2)
+        return l1
+    } else {
+        l2.next = mergeTwoLists(l1, l2.next)
+        return l2
+    }
 }
+
+/*----------------找出中位数----------------*/
+//https://leetcode.com/problems/sliding-window-median/description/
+func medianSlidingWindow(_ nums: [Int], _ k: Int) -> [Double] {
+    var result = [Double]()
+    let isEven = k % 2 == 0
+    let middle = k / 2
+
+    for index in 0...nums.count - k {
+        let sliding = nums[index..<k + index].sorted()
+        result.append(isEven ? Double(sliding[middle] + sliding[middle - 1]) / 2 : Double(sliding[middle]))
+    }
+
+    return result
+}
+
+medianSlidingWindow([1,3,-1,-3,5,3,6,7], 3)

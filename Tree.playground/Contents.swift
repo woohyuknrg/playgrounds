@@ -108,6 +108,20 @@ func lowestCommonAncestor(_ root: TreeNode?, p: TreeNode?, q: TreeNode?) -> Tree
     return root
 }
 
+//给定二叉树，获取2个节点的最近公共祖先节点
+func lowestCommonAncestor2(_ root: TreeNode?, p: TreeNode?, q: TreeNode?) -> TreeNode? {
+    if root == nil || p === root || q === root {
+        return root
+    }
+
+    let left = lowestCommonAncestor2(root?.left, p: p, q: q)
+    let right = lowestCommonAncestor2(root?.right, p: p, q: q)
+
+    if left != nil && right != nil {
+        return root
+    }
+    return left ?? right
+}
 
 //----------------作业----------------//
 //获取二叉树的最小深度
@@ -164,4 +178,36 @@ func flatten(_ root: TreeNode?) {
     root.right = preNode
     root.left = nil
     preNode = root
+}
+
+//恢复二叉搜索树
+//https://leetcode.com/problems/recover-binary-search-tree/description/
+
+var first: TreeNode?
+var second: TreeNode?
+var previous = TreeNode(Int.min)
+
+func recoverTree(_ root: TreeNode?) {
+    traversal(root)
+    if let first = first, let second = second {
+        swap(&first.val, &second.val)
+    }
+}
+
+func traversal(_ root: TreeNode?) {
+    guard let root = root else {
+        return
+    }
+
+    traversal(root.left)
+
+    if first == nil && previous.val > root.val {
+        first = previous
+    }
+    if first != nil && previous.val > root.val {
+        second = root
+    }
+    previous = root
+
+    traversal(root.right)
 }
