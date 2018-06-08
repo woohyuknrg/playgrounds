@@ -100,3 +100,59 @@ func medianSlidingWindow(_ nums: [Int], _ k: Int) -> [Double] {
 }
 
 medianSlidingWindow([1,3,-1,-3,5,3,6,7], 3)
+
+
+/*----------------找出无序数组里的第k大元素----------------*/
+//https://leetcode.com/problems/kth-largest-element-in-an-array/discuss/
+func findKthLargest(_ nums: [Int], _ k: Int) -> Int {
+    if nums.count == 0 {
+        return 0
+    }
+    return divideAndConquer(nums, 0, nums.count - 1, nums.count - k)
+}
+
+func divideAndConquer(_ nums: [Int], _ start: Int, _ end: Int, _ k: Int) -> Int {
+    print("nums=\(nums) start=\(start) end=\(end) k=\(k)")
+    let pivot = nums[end]
+    var newNums = nums
+    var left = start
+//    var right = end
+
+    for i in start..<end {
+        if newNums[i] <= pivot {
+            if left != i {
+                newNums.swapAt(left, i)
+                print("for swap newNums=\(newNums)")
+            }
+            left += 1
+        }
+    }
+//    while left < right {
+//        while newNums[left] > pivot && left < right {
+//            left += 1
+//        }
+//        while newNums[right] <= pivot && left < right {
+//            right -= 1
+//        }
+//        newNums.swapAt(left, right)
+//    }
+
+    if left != end {
+        newNums.swapAt(left, end)
+        print("swap newNums=\(newNums) left=\(left) end=\(end)")
+    }
+    print("left=\(left) end=\(end) k=\(k)")
+
+    if left == k {
+        return newNums[left]
+    } else if left > k {
+        print("left part")
+        return divideAndConquer(newNums, start, left - 1, k)
+    } else {
+        print("right part")
+        return divideAndConquer(newNums, left + 1, end, k)
+    }
+}
+
+findKthLargest([5,6,4,3,2,1], 2)
+//findKthLargest([3,2,3,1,2,4,5,5,6], 4)
