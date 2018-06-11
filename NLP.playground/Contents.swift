@@ -1,4 +1,5 @@
 //: Playground - noun: a place where people can play
+//NLLanguageRecognizer，NLTokenizer，NLTagger：https://www.swiftbysundell.com/daily-wwdc/a-first-look-at-the-natural-language-framework
 
 import Foundation
 
