@@ -17,7 +17,7 @@ extension Array where Element: Comparable {
                 
                 print("comparing \(key) and \(output[secondIndex])")
                 if key < output[secondIndex] {
-                    swap(&output[secondIndex + 1], &output[secondIndex])
+                    output.swapAt(secondIndex + 1, secondIndex)
                     print("output=\(output)")
                 } else {
                     break
@@ -34,22 +34,39 @@ extension Array where Element: Comparable {
         guard count > 1 else {
             return self
         }
-        
+
+        //如果前后数据进行了交换，则为true，否则为false。如果没有数据交换，则排序完成
+        var flag = true
         var output = self
-        
-        for index in 0..<count {
-            let passes = count - 1 - index
-            
-            for secondIndex in 0..<passes {
-                let key = output[secondIndex]
-                print("bubbleSort comparing \(key) and \(output[secondIndex + 1])")
-                if key > output[secondIndex + 1] {
-                    swap(&output[secondIndex], &output[secondIndex + 1])
+        var arrCount = count
+
+        while flag {
+            flag = false
+
+            for index in 0..<arrCount - 1 {
+                print("bubbleSort comparing \(output[index]) and \(output[index + 1])")
+                if output[index] > output[index + 1] {
+                    output.swapAt(index, index + 1)
                     print("output=\(output)")
+                    flag = true
                 }
             }
+            arrCount -= 1
         }
-        
+
+//        for index in 0..<count {
+//            let passes = count - 1 - index
+//
+//            for secondIndex in 0..<passes {
+//                let key = output[secondIndex]
+//                print("bubbleSort comparing \(key) and \(output[secondIndex + 1])")
+//                if key > output[secondIndex + 1] {
+//                    output.swapAt(secondIndex, secondIndex + 1)
+//                    print("output=\(output)")
+//                }
+//            }
+//        }
+
         return output
     }
     
@@ -75,7 +92,7 @@ extension Array where Element: Comparable {
             }
             
             if index != minimum {
-                swap(&output[index], &output[minimum])
+                output.swapAt(index, minimum)
                 print("output=\(output)")
             }
         }
@@ -109,7 +126,7 @@ extension Array where Element: Comparable {
             print("current is: \(self[currentIndex]). pivot is \(self[pivot])")
             if self[currentIndex] <= self[pivot] {
                 if wallIndex != currentIndex {
-                    swap(&self[currentIndex], &self[wallIndex])
+                    self.swapAt(currentIndex, wallIndex)
                     print("self=\(self)")
                 }
                 
@@ -119,7 +136,7 @@ extension Array where Element: Comparable {
         }
         
         if wallIndex != pivot {
-            swap(&self[wallIndex], &self[pivot])
+            self.swapAt(wallIndex, pivot)
             print("self=\(self)")
         }
         
